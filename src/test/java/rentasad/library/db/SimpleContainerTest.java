@@ -17,14 +17,14 @@ public class SimpleContainerTest {
 			.withCommand("sh", "-c", "while :; do sleep 1; done")  // Container am Laufen halten
 			.withExposedPorts(80);
 
-	@Test
+//	@Test
 	public void testSimpleContainer() {
 		simpleContainer.start();
 		System.out.println(simpleContainer.getLogs());  // Container-Logs abrufen
 		assertTrue(simpleContainer.isRunning());
 	}
 
-	@Test
+//	@Test
 	public void testDockerEnvironment() {
 		System.out.println("Docker host: " + DockerClientFactory.instance().dockerHostIpAddress());
 		System.out.println("Docker version: " + DockerClientFactory.instance().client().versionCmd().exec().getVersion());

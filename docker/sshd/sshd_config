@@ -1,7 +1,0 @@
-LogLevel DEBUG3
-PermitRootLogin yes
-PubkeyAuthentication yes
-PasswordAuthentication no
-AuthorizedKeysFile .ssh/authorized_keys
-HostKeyAlgorithms +ssh-rsa
-PubkeyAcceptedKeyTypes +ssh-rsa
