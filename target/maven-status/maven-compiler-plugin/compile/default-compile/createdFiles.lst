@@ -1,0 +1,12 @@
+rentasad\library\db\ConnectionInfo$ConnectionInfoBuilder.class
+rentasad\library\db\sshConnections\HikariDataSourceHelper.class
+rentasad\library\db\sshConnections\SSHConnection.class
+rentasad\library\db\enums\ConnectionInfoParameter.class
+rentasad\library\db\sshConnections\SSHJConnection.class
+rentasad\library\db\ConnectionInfo.class
+rentasad\library\db\enums\SSHLibraryEnum.class
+rentasad\library\db\MYSQLConnection.class
+rentasad\library\db\ConnectionInfo$1.class
+rentasad\library\db\sshConnections\JSchSSHConnection.class
+rentasad\library\db\MySQLSSHConnection.class
+rentasad\library\db\MySQLSSHConnection$1.class
