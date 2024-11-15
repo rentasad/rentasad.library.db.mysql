@@ -11,8 +11,7 @@
 	<groupId>rentasad</groupId>
 	<artifactId>rentasad.library.db.mysql</artifactId>
 	<name>rentasad.library.db.mysql</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
+	<url>https://github.com/rentasad/rentasad.library.db.mysql</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
