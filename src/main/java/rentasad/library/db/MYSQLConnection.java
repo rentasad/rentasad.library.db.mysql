@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * The MYSQLConnection class represents a connection to a MySQL database. It provides methods for creating and managing database connections.
- *
  * This class has the following properties:
  * - MYSQL_HOST: A constant that represents the host name of the MySQL server.
  * - MYSQL_USER: A constant that represents the user name for database login.
@@ -26,7 +25,6 @@ import java.util.Set;
  * - connectionParametersMap: A map that contains the connection parameters passed to the getInstance method.
  * - dataSource: A HikariDataSource object that represents the connection pool.
  * - instances: A map that stores the instances of MYSQLConnection created with different connection parameters.
- *
  * The MYSQLConnection class has the following methods:
  * - getInstance: A static method that returns an instance of MYSQLConnection based on the specified connection parameters.
  * - initializeDataSource: A private method that initializes the HikariDataSource object with the specified connection parameters.
@@ -48,7 +46,10 @@ public class MYSQLConnection {
 	public static final int MYSQL_DEFAULT_PORT_VALUE_INT = 3306;
 	private static final boolean debug = false;
 	public static final String DRIVER_CLASS_MYSQL_CONNECTOR_8 = "com.mysql.cj.jdbc.Driver";
-
+	private static final String MAXIMUM_POOL_SIZE = "DB_POOL_SIZE";
+	@Getter
+	@Setter
+	public static int maximumPoolSize = 4;
 	private static final Map<String, MYSQLConnection> instances = new HashMap<>();
 	@Getter
 	@Setter
@@ -62,6 +63,8 @@ public class MYSQLConnection {
 		String host = connectionParametersMap.get(MYSQL_HOST);
 		String dbName = connectionParametersMap.get(MYSQL_DATABASE);
 		String port = connectionParametersMap.getOrDefault(MYSQL_PORT, MYSQL_DEFAULT_PORT_VALUE);
+		String poolSizeString = connectionParametersMap.getOrDefault(MAXIMUM_POOL_SIZE, String.valueOf(maximumPoolSize));
+		maximumPoolSize = Integer.parseInt(poolSizeString);
 		String instanceKey = host + "-" + port + "-" + dbName;
 
 		if (!instances.containsKey(instanceKey)) {
@@ -90,7 +93,7 @@ public class MYSQLConnection {
 		hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 		hikariConfig.addDataSourceProperty("useServerPrepStmts", "true");
 		hikariConfig.setPoolName("HikariPool-" + poolName);
-		hikariConfig.setMaximumPoolSize(2);
+		hikariConfig.setMaximumPoolSize(maximumPoolSize);
 
 		this.dataSource = new HikariDataSource(hikariConfig);
 	}
