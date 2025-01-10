@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>rentasad.library</groupId>
 	<artifactId>rentasad.library.db.mysql</artifactId>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<url>https://github.com/rentasad/rentasad.library.db.mysql</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -125,7 +125,7 @@
 		<dependency>
 			<groupId>rentasad.library</groupId>
 			<artifactId>rentasad.library.basicTools.stringTools</artifactId>
-			<version>B2.6.2</version>
+			<version>3.0.0</version>
 		</dependency>
 		<!-- Update to new Connector
 		https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
