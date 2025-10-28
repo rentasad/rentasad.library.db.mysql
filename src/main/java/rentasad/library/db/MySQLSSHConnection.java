@@ -97,19 +97,17 @@ public class MySQLSSHConnection implements AutoCloseable {
 	@Override
 	public void close() throws IOException
 	{
-		if (sshConnection != null) {
-			try
-			{
-				boolean closed = sshConnection.getDatabaseConnection()
-											  .isClosed();
-				sshConnection.close();
-			} catch (SQLException e)
-			{
-				throw new RuntimeException(e);
-			}
-
-		}
-	}
+        if (sshConnection != null) {
+            try
+            {
+                sshConnection.close();
+            } catch (Exception e)
+            {
+                // Log the error but don't throw to ensure cleanup completes
+                log.warn("Error while closing SSH connection: {}", e.getMessage());
+            }
+        }
+    }
 }
 
 
