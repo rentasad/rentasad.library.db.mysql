@@ -1,1 +1,4 @@
 target/
+/build_output.txt
+/effective-pom
+/effective-pom.xml
