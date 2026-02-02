@@ -35,7 +35,8 @@ import java.util.Set;
  * - dbConnectWithTimeZoneUTC: A static method that returns a Connection object with the UTC time zone.
  * - dbConnect: A static method that returns a Connection object with the specified connection parameters.
  */
-public class MYSQLConnection {
+public class MYSQLConnection
+{
 
 	public static final String MYSQL_HOST = "MYSQL_HOST";
 	public static final String MYSQL_USER = "MYSQL_USER";
@@ -56,10 +57,12 @@ public class MYSQLConnection {
 	private Map<String, String> connectionParametersMap;
 	private HikariDataSource dataSource;
 
-	private MYSQLConnection() {
+	private MYSQLConnection()
+	{
 	}
 
-	public static MYSQLConnection getInstance(Map<String, String> connectionParametersMap) throws SQLException {
+	public static MYSQLConnection getInstance(Map<String, String> connectionParametersMap) throws SQLException
+	{
 		String host = connectionParametersMap.get(MYSQL_HOST);
 		String dbName = connectionParametersMap.get(MYSQL_DATABASE);
 		String port = connectionParametersMap.getOrDefault(MYSQL_PORT, MYSQL_DEFAULT_PORT_VALUE);
@@ -67,7 +70,8 @@ public class MYSQLConnection {
 		maximumPoolSize = Integer.parseInt(poolSizeString);
 		String instanceKey = host + "-" + port + "-" + dbName;
 
-		if (!instances.containsKey(instanceKey)) {
+		if (!instances.containsKey(instanceKey))
+		{
 			MYSQLConnection instance = new MYSQLConnection();
 			instance.setConnectionParametersMap(connectionParametersMap);
 			instance.initializeDataSource(connectionParametersMap, instanceKey);
@@ -76,14 +80,27 @@ public class MYSQLConnection {
 		return instances.get(instanceKey);
 	}
 
-	private void initializeDataSource(Map<String, String> connectionParametersMap, String poolName) {
+	private void initializeDataSource(Map<String, String> connectionParametersMap, String poolName)
+	{
 		HikariConfig hikariConfig = new HikariConfig();
 		String mySqlServerHostname = connectionParametersMap.get(MYSQL_HOST);
 		String mySqlDatabaseName = connectionParametersMap.get(MYSQL_DATABASE);
 		String mySqlDbUserid = connectionParametersMap.get(MYSQL_USER);
 		String mySqlDbPassword = connectionParametersMap.get(MYSQL_PASSWORD);
 		String mySqlDbPort = connectionParametersMap.getOrDefault(MYSQL_PORT, MYSQL_DEFAULT_PORT_VALUE);
-		String jdbcUrl = String.format("jdbc:mysql://%s:%s/%s", mySqlServerHostname, mySqlDbPort, mySqlDatabaseName);
+
+
+//		String jdbcUrl = String.format(
+//				"jdbc:mysql://%s:%s/%s?characterEncoding=UTF-8&useUnicode=true&sessionVariables=character_set_client=utf8mb4,collation_connection=utf8mb4_unicode_ci",
+//				mySqlServerHostname, mySqlDbPort, mySqlDatabaseName
+//		);
+
+		String jdbcUrl = String.format(
+				"jdbc:mysql://%s:%s/%s?characterEncoding=UTF-8&useUnicode=true&sessionVariables=character_set_client=utf8mb4,collation_connection=utf8mb4_unicode_ci",
+				mySqlServerHostname, mySqlDbPort, mySqlDatabaseName
+		);
+
+
 
 		hikariConfig.setJdbcUrl(jdbcUrl);
 		hikariConfig.setUsername(mySqlDbUserid);
@@ -98,21 +115,26 @@ public class MYSQLConnection {
 		this.dataSource = new HikariDataSource(hikariConfig);
 	}
 
-	public Connection getConnection() throws SQLException {
-		if (dataSource == null) {
+	public Connection getConnection() throws SQLException
+	{
+		if (dataSource == null)
+		{
 			throw new SQLException("Connection pool is not initialized.");
 		}
 		return dataSource.getConnection();
 	}
 
-	public void close() {
-		if (dataSource != null) {
+	public void close()
+	{
+		if (dataSource != null)
+		{
 			dataSource.close();
 			System.out.println("HikariCP connection pool closed.");
 		}
 	}
 
-	public static Map<String, String> getDefaultConnectionPropertiesMap() {
+	public static Map<String, String> getDefaultConnectionPropertiesMap()
+	{
 		Map<String, String> connectionPropertiesMap = new HashMap<>();
 		connectionPropertiesMap.put("allowMultiQueries", "true");
 		connectionPropertiesMap.put("rewriteBatchedStatements", "true");
@@ -126,15 +148,18 @@ public class MYSQLConnection {
 		return connectionPropertiesMap;
 	}
 
-	public static String getParamStringFromConnectionPropertiesMap(final Map<String, String> connectionPropertiesMap) {
+	public static String getParamStringFromConnectionPropertiesMap(final Map<String, String> connectionPropertiesMap)
+	{
 		StringBuilder parameterString = new StringBuilder();
 		Set<String> keySet = connectionPropertiesMap.keySet();
 		int i = 0;
-		for (String param : keySet) {
+		for (String param : keySet)
+		{
 			i++;
 			String value = connectionPropertiesMap.get(param);
 			parameterString.append(String.format("%s=%s", param, value));
-			if (i < keySet.size()) {
+			if (i < keySet.size())
+			{
 				parameterString.append("&");
 			}
 		}
@@ -143,14 +168,16 @@ public class MYSQLConnection {
 	}
 
 	// Abwärtskompatible Methode für die Verbindung mit UTC-Zeitzone
-	public static Connection dbConnectWithTimeZoneUTC(Map<String, String> mySqlConfigMap) throws SQLException {
+	public static Connection dbConnectWithTimeZoneUTC(Map<String, String> mySqlConfigMap) throws SQLException
+	{
 		mySqlConfigMap.put("serverTimezone", "UTC");
 		MYSQLConnection instance = getInstance(mySqlConfigMap);
 		return instance.getConnection();
 	}
 
 	// Abwärtskompatible Methode für die Standard-DB-Verbindung
-	public static Connection dbConnect(Map<String, String> connectionParametersMap) throws SQLException {
+	public static Connection dbConnect(Map<String, String> connectionParametersMap) throws SQLException
+	{
 		MYSQLConnection instance = getInstance(connectionParametersMap);
 		return instance.getConnection();
 	}

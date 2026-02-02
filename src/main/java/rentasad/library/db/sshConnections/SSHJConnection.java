@@ -120,19 +120,43 @@ public class SSHJConnection implements SSHConnection
 
 	@SneakyThrows
 	@Override
-	public void close()
-	{
-		if (dataSource != null)
-		{
-			dataSource.close();
-		}
-		if (sshClient != null)
-		{
-			sshClient.disconnect();
-		}
-		if (serverSocket != null && !serverSocket.isClosed())
-		{
-			serverSocket.close();
-		}
-	}
+    public void close()
+    {
+        if (dataSource != null)
+        {
+            try
+            {
+                dataSource.close();
+            }
+            catch (Exception e)
+            {
+                // Log but don't throw - we want to continue cleanup
+                System.err.println("Error closing datasource: " + e.getMessage());
+            }
+        }
+        if (sshClient != null && sshClient.isConnected())
+        {
+            try
+            {
+                sshClient.disconnect();
+            }
+            catch (Exception e)
+            {
+                // Log but don't throw - SSH might already be disconnected
+                System.err.println("Error disconnecting SSH client: " + e.getMessage());
+            }
+        }
+        if (serverSocket != null && !serverSocket.isClosed())
+        {
+            try
+            {
+                serverSocket.close();
+            }
+            catch (IOException e)
+            {
+                // Log but don't throw
+                System.err.println("Error closing server socket: " + e.getMessage());
+            }
+        }
+    }
 }
