@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>rentasad.library</groupId>
     <artifactId>rentasad.library.db.mysql</artifactId>
-    <version>4.0.1-jdk17</version>
+    <version>4.0.2-jdk17</version>
     <description>Library for MySQL database operations in Java applications</description>
     <url>https://github.com/rentasad/rentasad.library.db.mysql</url>
     <properties>
